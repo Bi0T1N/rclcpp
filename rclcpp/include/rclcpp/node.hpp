@@ -26,6 +26,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+#include <unordered_map>
 
 #include "rcutils/macros.h"
 
@@ -70,6 +71,8 @@
 #include "rclcpp/timer.hpp"
 #include "rclcpp/visibility_control.hpp"
 
+class map_of_mutexes;
+
 namespace rclcpp
 {
 
@@ -78,6 +81,9 @@ class Node : public std::enable_shared_from_this<Node>
 {
 public:
   RCLCPP_SMART_PTR_DEFINITIONS(Node)
+
+  static map_of_mutexes* map_object_ptr;
+  static int count_of_map_instances;
 
   /// Create a new node with the specified name.
   /**
@@ -1310,8 +1316,23 @@ private:
   const std::string sub_namespace_;
   const std::string effective_namespace_;
 };
-
 }  // namespace rclcpp
+
+void global_for_each_callback_group(const rclcpp::Node* node);
+
+class map_of_mutexes
+{
+  public:
+    map_of_mutexes();
+
+    // Methods need to be protected by internal mutex
+    void create_mutex_of_node(rclcpp::Node* node);
+    std::mutex get_mutex_of_node(rclcpp::Node* node);
+    void delete_mutex_of_node(rclcpp::Node* node);
+
+    std::unordered_map<rclcpp::Node* , std::mutex> data;
+    std::mutex internal_mutex;
+};
 
 #ifndef RCLCPP__NODE_IMPL_HPP_
 // Template implementations

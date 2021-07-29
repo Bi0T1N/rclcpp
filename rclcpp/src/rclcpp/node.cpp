@@ -617,6 +617,10 @@ Node::get_node_options() const
   return this->node_options_;
 }
 
+
+map_of_mutexes * Node::map_object_ptr;
+int Node::count_of_map_instances;
+
 // map_of_mutexes methods
 map_of_mutexes::map_of_mutexes()
 {

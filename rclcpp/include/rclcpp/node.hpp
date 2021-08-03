@@ -70,6 +70,7 @@
 #include "rclcpp/timer.hpp"
 #include "rclcpp/visibility_control.hpp"
 
+typedef std::function<void (rclcpp::CallbackGroup::SharedPtr)> CallbackGroupFunction;
 
 namespace rclcpp
 {
@@ -154,8 +155,8 @@ public:
   const std::vector<rclcpp::CallbackGroup::WeakPtr> &
   get_callback_groups() const;
 
-  //RCLCPP_PUBLIC
-  //void for_each_callback_group(const node_interfaces::NodeBaseInterface::CallbackGroupFunction & func);
+  RCLCPP_PUBLIC
+  void for_each_callback_group(const CallbackGroupFunction & func);
 
   /// Create and return a Publisher.
   /**

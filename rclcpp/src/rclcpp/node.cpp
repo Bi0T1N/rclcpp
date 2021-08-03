@@ -607,11 +607,8 @@ Node::get_node_options() const
 }
 
 
-//void Node::for_each_callback_group(const node_interfaces::NodeBaseInterface::CallbackGroupFunction & func)
-//{
-//  auto node_base_type = (rclcpp::node_interfaces::NodeBase*) node_base_;
-//  node_base_type->for_each_callback_group(func);
-//}
-
-
-
+void Node::for_each_callback_group(const CallbackGroupFunction & func)
+{
+  auto node_base_type = std::dynamic_pointer_cast<rclcpp::node_interfaces::NodeBase>(node_base_);
+  node_base_type->for_each_callback_group(func);
+}

@@ -237,12 +237,6 @@ NodeBase::create_callback_group(
   rclcpp::CallbackGroupType group_type,
   bool automatically_add_to_executor_with_node)
 {
-  //using rclcpp::CallbackGroup;
-  //using rclcpp::CallbackGroupType;
-  //auto group = CallbackGroup::SharedPtr(
-  //  new CallbackGroup(
-  //    group_type,
-  //    automatically_add_to_executor_with_node));
   auto group = std::make_shared<rclcpp::CallbackGroup>(
       group_type,
       automatically_add_to_executor_with_node);
@@ -261,18 +255,15 @@ NodeBase::get_default_callback_group()
 bool
 NodeBase::callback_group_in_node(rclcpp::CallbackGroup::SharedPtr group)
 {
-  //bool group_belongs_to_this_node = false;
   auto mutex_ptr = this->map_object_ptr->get_mutex_of_nodebase(this);
   std::lock_guard<std::mutex> lock(*mutex_ptr);
 
   for (auto & weak_group : this->callback_groups_) {
     auto cur_group = weak_group.lock();
     if (cur_group && (cur_group == group)) {
-      //group_belongs_to_this_node = true;
       return true;
     }
   }
-  //return group_belongs_to_this_node;
   return false;
 }
 

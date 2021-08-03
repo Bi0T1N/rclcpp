@@ -89,6 +89,8 @@
 #include "rclcpp_lifecycle/transition.hpp"
 #include "rclcpp_lifecycle/visibility_control.h"
 
+typedef std::function<void (rclcpp::CallbackGroup::SharedPtr)> CallbackGroupFunction;
+
 namespace rclcpp_lifecycle
 {
 
@@ -199,6 +201,9 @@ public:
   RCLCPP_LIFECYCLE_PUBLIC
   const std::vector<rclcpp::CallbackGroup::WeakPtr> &
   get_callback_groups() const;
+
+  RCLCPP_LIFECYCLE_PUBLIC
+  void for_each_callback_group(const CallbackGroupFunction & func);
 
   /// Create and return a Publisher.
   /**

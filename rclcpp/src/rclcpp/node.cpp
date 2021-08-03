@@ -99,11 +99,6 @@ Node::Node(
   const NodeOptions & options)
 : Node(node_name, "", options)
 {
-  // Initialize the map_object only once
-  if (this->count_of_map_instances == 0){
-    this->map_object_ptr = new map_of_mutexes();
-    this->count_of_map_instances++;
-  }
 }
 
 static
@@ -200,12 +195,6 @@ Node::Node(
   sub_namespace_(""),
   effective_namespace_(create_effective_namespace(this->get_namespace(), sub_namespace_))
 {
-  // Initialize the map_object only once
-  if (this->count_of_map_instances == 0){
-    this->map_object_ptr = new map_of_mutexes();
-    this->count_of_map_instances++;
-  }
-
   // we have got what we wanted directly from the overrides,
   // but declare the parameters anyway so they are visible.
   rclcpp::detail::declare_qos_parameters(
@@ -618,19 +607,11 @@ Node::get_node_options() const
 }
 
 
-map_of_mutexes * Node::map_object_ptr;
-int Node::count_of_map_instances;
+//void Node::for_each_callback_group(const node_interfaces::NodeBaseInterface::CallbackGroupFunction & func)
+//{
+//  auto node_base_type = (rclcpp::node_interfaces::NodeBase*) node_base_;
+//  node_base_type->for_each_callback_group(func);
+//}
 
-// map_of_mutexes methods
-map_of_mutexes::map_of_mutexes()
-{
-}
-
-
-// Function to replace get_callback_groups()
-void global_for_each_callback_group(const rclcpp::Node* node)
-{
-
-}
 
 
